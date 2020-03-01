@@ -41,7 +41,15 @@ def build_file2hash_dict(init_path):
     """
     #os.walk参数：top(首个参数)-根目录，topdown-先遍历根目录，οnerrοr异常处理程序，followlinks-遍历快捷方式
     on_delete_path = os.path.join(init_path,'用来放置要删除文件的地方') #设置一个放置要删除文件的地方，因为直接删除太危险了
-    os.mkdir(on_delete_path)
+    try :
+        os.mkdir(on_delete_path)
+    except FileExistsError:
+        print('文件夹“用来放置要删除文件的地方”已经存在，如果继续请输入Y')
+        check = input()
+        if check == 'Y':
+            pass
+        else :
+            return
     md5set = set()
     cleaned = {'count': 0, 'name': []}
     for root, dirs, files in os.walk(init_path, topdown=True, followlinks=False):
@@ -51,7 +59,10 @@ def build_file2hash_dict(init_path):
         for f in files:
             code = file_to_MD5(os.path.join(root, f))
             if code in md5set:
-                shutil.move(os.path.join(root, f), on_delete_path)
+                try :
+                    shutil.move(os.path.join(root, f), on_delete_path)
+                except FileNotFoundError:
+                    print(f"无法找到{os.path.join(root, f)}，建议手动处理")
                 cleaned['name'].append(f)
                 cleaned['count'] += 1
             else:
@@ -69,5 +80,7 @@ if __name__ == '__main__':
     print(file_to_MD5('wechat-file-cleaner-demo/test.txt'), file_to_MD5('wechat-file-cleaner-demo/test - 副本.txt'),
           file_to_MD5('wechat-file-cleaner-demo/test.txt')==file_to_MD5('wechat-file-cleaner-demo/test - 副本.txt'))
     print('------------')
-    print(r'测试函数build_file2hash_dict的功能，清理微信缓存C:\Users\15510\Documents\temp')
-    build_file2hash_dict(r'C:\Users\15510\Documents\temp')
+    print(r'执行函数build_file2hash_dict的功能，根据一个目录，会将目录下属的文件进行检查，把重复文件移动到“目录\用来放置要删除文件的地方”这个文件夹')
+    print(r'请输入路径，如C:\Users\15510\Documents\temp')
+    path = input()
+    build_file2hash_dict(path)
