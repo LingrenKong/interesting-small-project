@@ -16,3 +16,16 @@ for one in allpos:
     if ok:
         okList.add(one)
 len(okList)
+
+t = set()
+for i in okList:
+    count = 2
+    turn = {}
+    turn[i[0]] = 1
+    for j in range(len(i)):
+        if i[j] not in turn.keys():
+            turn[i[j]] = count
+            count+=1
+    rep = [turn[x]  for x in i]
+    print(rep)
+    t.add(tuple(rep))
