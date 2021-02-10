@@ -1,0 +1,18 @@
+digraph {
+	node [fontname=SimHei]
+	rel0 [label="开户" shape=diamond]
+	rel1 [label="建卡" shape=diamond]
+	rel2 [label="交易" shape=diamond]
+	rel3 [label="计息" shape=diamond]
+	en0 [label="用户" shape=box]
+	en1 [label="账户" shape=box]
+	en2 [label="储蓄卡" shape=box]
+	en0 -> rel0 [label=1 dir=none]
+	en1 -> rel0 [label=n dir=none]
+	en1 -> rel1 [label=1 dir=none]
+	en2 -> rel1 [label=n dir=none]
+	en1 -> rel2 [label=m dir=none]
+	en1 -> rel2 [label=n dir=none]
+	en1 -> rel3 [label=1 dir=none]
+	en1 -> rel3 [label=n dir=none]
+}
